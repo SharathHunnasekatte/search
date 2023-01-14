@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { getPosts } from './api/api'
+import { useState, useEffect } from 'react'
+import SearchBar from './SearchPage'
+import ListPage from './ListPage'
 
 function App() {
+  const [posts, setPosts] = useState([])
+  const [searchResults, setSearchResults] = useState([])
+
+  useEffect(() => {
+    getPosts().then(json => {
+      setPosts(json)
+      setSearchResults(json)
+    })
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <SearchBar posts={posts} setSearchResults={setSearchResults} />
+      <ListPage searchResults={searchResults} />
+    </>
+  )
 }
 
 export default App;
